@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/34374881/159348493-2091626b-1ce3-4d9b-
 **Supported Unity Versions?**  
 Definitely Unity 2020.3.20f1
 
-**I have a Error after importing the package**
+**I have a Error after importing the package**  
 Restart Unity, that usually fixes it :)
 
 | **How to install?** | Comments |
