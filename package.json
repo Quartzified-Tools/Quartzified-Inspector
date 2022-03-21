@@ -1,0 +1,23 @@
+{
+  "name": "com.quartzified.inspector",
+  "version": "0.1.0",
+  "displayName": "Quartzified Inspector",
+  "description": "Unity Inspector Extension",
+  "unity": "2020.3",
+  "unityRelease": "20f1",
+  "documentationUrl": "",
+  "changelogUrl": "",
+  "licensesUrl": "",
+  "keywords": [
+    "Quartzified",
+    "Utility",
+    "Editor",
+    "Inspector"
+  ],
+  "author": {
+    "name": "Quartzi",
+    "email": "virgil@quartzi.io",
+    "url": "https://www.quartzi.io"
+  },
+  "type": "tool"
+}
