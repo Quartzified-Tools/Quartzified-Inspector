@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal class PackagePrefs : ScriptableObject
     {

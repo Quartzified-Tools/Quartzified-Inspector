@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     [InitializeOnLoad]
     internal static class InspectorInjection
@@ -35,11 +35,12 @@ namespace Quartzified.Custom.Inspector
             editorFrames = (editorFrames + 1) % UpdateRate; // only run every N frames
             if (editorFrames != 0) 
                 return;
-            
+
             var focusedWindow = EditorWindow.focusedWindow ?? EditorWindow.mouseOverWindow;
 
             if (focusedWindow == lastFocusedWindow)
                 return;
+
             lastFocusedWindow = focusedWindow;
 
             FindInspectorWindowsAndInject();

@@ -5,7 +5,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal class QuartzifiedInspector
     {
@@ -18,7 +18,7 @@ namespace Quartzified.Custom.Inspector
             
             public Object target => editor.target;
         }
-        
+
         internal static QuartzifiedInspector LastInjected;
         
         internal EditorWindow propertyEditor;
@@ -40,7 +40,9 @@ namespace Quartzified.Custom.Inspector
             this.mainContainer = root.Query(className: "unity-inspector-main-container").First();
             this.editorsList = root.Query(className: "unity-inspector-editors-list").First();
 
-            EditorApplication.update += EditorAwake;
+            EditorApplication.update += EditorAwake;    
+            propertyEditor.autoRepaintOnSceneChange = true;
+            Undo.undoRedoPerformed += RebuildToolbar;
         }
 
         public static bool TryInject(EditorWindow propertyEditor, out QuartzifiedInspector inspector)
@@ -71,7 +73,7 @@ namespace Quartzified.Custom.Inspector
             var contentViewport = scrollView.Get("unity-content-viewport");
             
             contentViewport.RegisterCallback<GeometryChangedEvent>(_ => contentViewport.style.marginRight = 0);
-
+                
             RetrieveEditorElements();
             
             var hasMainToolbar = mainContainer.Query<InspectorMainToolbar>().HasAny();
@@ -79,17 +81,12 @@ namespace Quartzified.Custom.Inspector
             {
                 var inspectorToolbar = new InspectorMainToolbar(propertyEditor);
                 inspectorToolbar.RegisterCallback<DetachFromPanelEvent>(_ => InspectorInjection.TryReinjectWindow(propertyEditor));
+                InspectorInjection.onInspectorRebuild?.Invoke(propertyEditor, InspectorInjection.RebuildStage.EndBeforeRepaint);
             }
             
             if (gameObjectEditor == null)
                 return false;
-            
-            
-            if (gameObjectEditor.childCount != 3)
-                return false;
-            
-            var inspectorObject = PropertyEditorRef.GetInspectedObject(propertyEditor);
-            
+
             var componentsToolbar = new InspectorComponentsToolbar();
             componentsToolbar.RegisterCallback<DetachFromPanelEvent>(_ => InspectorInjection.TryReinjectWindow(propertyEditor));
             
@@ -103,29 +100,13 @@ namespace Quartzified.Custom.Inspector
             if (window != propertyEditor)
                 return;
 
-            if (stage == InspectorInjection.RebuildStage.EndBeforeRepaint)
-            {
+            if(stage == InspectorInjection.RebuildStage.EndBeforeRepaint)
                 RebuildToolbar();
-                FixComponentLayout();
-            }
-
-            if (stage == InspectorInjection.RebuildStage.PostfixAfterRepaint)
-            {
-                FixComponentLayout();
-            }
         }
 
-        void FixComponentLayout()
-        {
-            // Fixes an issue when collapsed components kept expanded layout (no idea why!)
-            editorsList.Query(className: "component").ForEach(x =>
-            {
-                x.style.fontSize = 12 + (Random.value / 1000);
-            });
-        }
 
         public void RebuildToolbar()
-        {
+        { 
             RetrieveEditorElements();
             var toolbar = root.Query<InspectorComponentsToolbar>().First();
             toolbar?.Rebuild();
@@ -149,15 +130,27 @@ namespace Quartzified.Custom.Inspector
                 var editor = EditorElementRef.GetEditor(editorElement);
                 var editorIndex = EditorElementRef.GetEditorIndex(editorElement);
 
+                if (editor == null)
+                    continue;
+
                 var target = editor.target;
                 var isGo = target is GameObject;
                 var isTransform = target is Transform;
 
-                inspector.RegisterCallback<GeometryChangedEvent>(evt =>
+                if(!inspector.ClassListContains("inspector"))
                 {
-                    var isExpanded = InternalEditorUtility.GetIsInspectorExpanded(target);
-                    editorElement.EnableInClassList("is-expanded", isExpanded);
-                });
+                    SetupInspectorElement();
+                    inspector.AddToClassList("inspector");
+                }
+
+                void SetupInspectorElement()
+                {
+                    inspector.RegisterCallback<GeometryChangedEvent>(evt =>
+                    {
+                        var isExpanded = InternalEditorUtility.GetIsInspectorExpanded(target);
+                        editorElement.EnableInClassList("is-expanded", isExpanded);
+                    });
+                }
 
                 if (isGo)
                     gameObjectEditor = editorElement;
@@ -166,11 +159,6 @@ namespace Quartzified.Custom.Inspector
                 editorElement.EnableInClassList("transform", isTransform);
                 editorElement.EnableInClassList("component", target is Component);
                 editorElement.EnableInClassList("material", target is Material);
-
-                #if !UNITY_2020_1_OR_NEWER
-                if (isTransform)
-                    editorElement.style.top = -2;
-                #endif
 
                 if (!isGo)
                     editors.Add(new EditorElement

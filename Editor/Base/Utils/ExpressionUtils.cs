@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal static class ExpressionUtils
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal enum InspectorMode
     {

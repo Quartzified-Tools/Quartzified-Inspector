@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal class InspectorEditorTab : ToolbarToggle
     {
@@ -60,8 +60,8 @@ namespace Quartzified.Custom.Inspector
             RegisterCallback<GeometryChangedEvent>(OnGeometryChange);
             RegisterCallback<ChangeEvent<bool>>(evt => SetActive(evt.newValue));
 
-#if !UNITY_2020_1_OR_NEWER
-            RegisterCallbacks<MouseUpEvent>(evt => value = !value)
+#if !UNITY_2020_2_OR_NEWER
+            RegisterCallbacks<MouseUpEvent>(evt => value = !value);
 #endif
 
             RegisterCallback<MouseEnterEvent>(evt => inspector.tooltip.ShowAt(worldBound, name, TooltipElement.Align.Top));
@@ -96,6 +96,7 @@ namespace Quartzified.Custom.Inspector
         void SetInspectorExpanded(bool expand)
         {
             SetVisible(expand);
+
             // Internally serialized expanding, needs to be restored on deactivation.
             // We use it here to show Gizmos temporarily.
             InternalEditorUtility.SetIsInspectorExpanded(target, expand); 
@@ -129,11 +130,13 @@ namespace Quartzified.Custom.Inspector
             
             PackagePrefs.Set<int>(GetPrefKey(), (int)state);
 
+            inspector.RebuildToolbar();
             inspector.propertyEditor.Repaint();
         }
 
         void OnGeometryChange(GeometryChangedEvent evt)
         {
+
             if (!preview)
                 preview = AssetPreview.GetAssetPreview(target);
             

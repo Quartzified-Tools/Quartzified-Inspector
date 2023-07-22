@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal class Index : ScriptableObject
     {

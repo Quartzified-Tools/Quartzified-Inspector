@@ -3,7 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     // Dunno about this one, using it as top-toolbar looks bloaty.. And there is not much we can put inside
     internal class InspectorMainToolbar : VisualElement

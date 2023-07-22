@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal class InspectorComponentsToolbar : InspectorElement
     {
@@ -11,6 +11,7 @@ namespace Quartzified.Custom.Inspector
         public InspectorComponentsToolbar()
         {
             Add(tabsList); 
+
             AddToClassList("components-toolbar"); 
             
             styleSheets.Add(UIResource.commonStyles);
@@ -28,14 +29,17 @@ namespace Quartzified.Custom.Inspector
             {
                 var target = editor.editor.target;
 
+                if (!target)
+                    continue;
+
                 var button = new InspectorEditorTab(editor);
 
-
-                Add(button);
-                //tabsList.Add(button);
+                tabsList.Add(button);
 
                 button.RegisterCallback<ChangeEvent<bool>>(_ => SwitchEditorTabs());
             }
+
+            SwitchEditorTabs();
         }
 
         void SwitchEditorTabs()

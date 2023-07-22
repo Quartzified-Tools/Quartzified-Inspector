@@ -4,7 +4,7 @@ using UnityEditor;
 using static System.Linq.Expressions.Expression;
 using Object = UnityEngine.Object;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     internal static class PropertyEditorRef
     {

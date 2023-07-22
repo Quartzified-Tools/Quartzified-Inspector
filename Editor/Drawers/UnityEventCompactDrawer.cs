@@ -2,6 +2,11 @@
 // Unity C# reference source
 // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/Inspector/UnityEventDrawer.cs
 
+
+// Newer Unity Version has improved Unity Events
+// This version is way to dangerous 
+
+/*
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -227,7 +232,8 @@ public class UnityEventCompactDrawer : PropertyDrawer
         {
             EditorGUI.BeginChangeCheck();
             var numberField = EditorStyles.numberField;
-            numberField.contentOffset = new Vector2(0, -1);
+            numberField.stretchWidth = true;
+            numberField.contentOffset = new Vector2(2, -1);
 
             var arraySize = EditorGUI.IntField(sizeRect, property.arraySize);
 
@@ -544,4 +550,6 @@ public class UnityEventCompactDrawer : PropertyDrawer
         m_LastSelectedIndex = list.index;
     }
 }
+
+*/
 #endif

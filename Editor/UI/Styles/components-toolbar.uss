@@ -1,16 +1,21 @@
 
 
 .components-toolbar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    top: -1;
-    padding-left: 0;
-    padding-right: 4;
-    margin-bottom: -8;
-    border-bottom-width: 1;
+    top: 0;
+    padding-top: 2;
+    padding-left: 4;
+    padding-right: 2;
+    padding-bottom: 4;
+    margin-bottom: 0;
     
     background-color: rgba(64, 64, 64, 0.1);
     border-color: rgba(0, 0, 0, 0.3);
+}
+
+.tabs-list
+{
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .toolbar-button:hover {
@@ -22,6 +27,7 @@
 .toolbar-button {
     background-color: rgba(96, 96, 96, 0.2);
 }
+
 .toolbar-button {
     justify-content: center;
     align-items: center;

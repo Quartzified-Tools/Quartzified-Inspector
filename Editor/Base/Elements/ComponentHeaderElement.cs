@@ -4,7 +4,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Quartzified.Custom.Inspector
+namespace Quartzified.Tools.Inspector
 {
     // Not sure if it's worth it.. We might instead skip expensive header methods using Harmony
     internal class ComponentHeaderElement : VisualElement
