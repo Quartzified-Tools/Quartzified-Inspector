@@ -1,6 +1,6 @@
 This package contains third-party software components governed by the license(s) indicated below:
 
-Project Forked from: Smart-Inspector
+Project Forked from: Smart-Inspector  
 License Type: MIT License
 
 Copyright (c) 2022 Neonage
